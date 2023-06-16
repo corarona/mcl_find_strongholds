@@ -41,14 +41,16 @@ local function init_strongholds(seed)
 end
 
 minetest.register_chatcommand("find_strongholds",{
+	params = "[<seed>]",
+	description = "Returns a list of mcl* stronghold positions using the current or if specified the seed supplied in the first parameter.",
 	func = function(p)
 		local seed = tonumber(p)
 		if not seed and not minetest.get_server_info().seed then
-			ws.dcm("minetest.get_server_info().seed not available, try supplying the seed as an argument to this command. update dragonfire to automatically retrieve map seed.")
+			minetest.display_chat_message("minetest.get_server_info().seed not available, try supplying the seed as an argument to this command. update dragonfire to automatically retrieve map seed.")
 		elseif not seed then
 			seed = tonumber(minetest.get_server_info().seed)
 		end
-		if not seed then ws.dcm("ERROR: seed must be a number.") return end
+		if not seed then minetest.display_chat_message("ERROR: seed must be a number.") return end
 
 		local lp = minetest.localplayer:get_pos()
 		local sp = init_strongholds(seed)
@@ -58,12 +60,13 @@ minetest.register_chatcommand("find_strongholds",{
 		if poi then
 			poi.display(sp[1],"Closest stronghold")
 		end
-		ws.dcm("strongholds for seed "..seed..":")
+		minetest.display_chat_message("strongholds for seed "..seed..":")
+		minetest.display_chat_message("(sorted by distance from player)")
 		local l = ""
-		for _,v in pairs(sp) do
+		for _,v in ipairs(sp) do
 			l=l.." "..minetest.pos_to_string(v)
 		end
-		ws.dcm(l)
-		minetest.log(l)
+		minetest.display_chat_message(l)
+		minetest.log("info",l)
 	end,
 })
