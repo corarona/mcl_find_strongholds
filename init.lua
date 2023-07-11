@@ -60,7 +60,7 @@ minetest.register_chatcommand("find_strongholds",{
 		if poi then
 			poi.display(sp[1],"Closest stronghold")
 		end
-		minetest.display_chat_message("strongholds for seed "..seed..":")
+		minetest.display_chat_message("strongholds for seed "..string.format("%18.0f",seed)..":")
 		minetest.display_chat_message("(sorted by distance from player)")
 		local l = ""
 		for _,v in ipairs(sp) do
